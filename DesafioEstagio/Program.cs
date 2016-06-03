@@ -10,10 +10,17 @@ namespace DesafioEstagio
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Please, insert the value in minutes \n(Example: -10/30)");
+            Console.WriteLine("Please, insert the operation Signal \n(Example: - or +)");
+            var operacao = Console.ReadLine();
+
+            if (String.IsNullOrEmpty(operacao) == false && (operacao != "-" && operacao != "+"))
+                throw new Exception("You should use only (+ or -)");
+
+            Console.WriteLine("Please, insert the value in minutes \n(Example: 10 or 30)");
+
             var minutos = Console.ReadLine();
 
-            var data = DateTime.Now.AddMinutes(int.Parse(minutos));
+            var data = DateTime.Now.AddMinutes(int.Parse(int.Parse(minutos) < 0 ? minutos : operacao + minutos));
 
             Console.WriteLine($"{Cortesia(data)}! Today is {data.ToString("dd/MM/yyyy HH:mm:ss")}");
             Console.ReadKey();
