@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace DesafioEstagio
 {
@@ -11,22 +8,30 @@ namespace DesafioEstagio
         static void Main(string[] args)
         {
             Console.WriteLine("Please, insert the operation Signal \n(Example: - or +)");
-            var operacao = Console.ReadLine();
+            var operacao = Console.ReadLine()?.Trim();
 
-            if (String.IsNullOrEmpty(operacao) == false && (operacao != "-" && operacao != "+"))
-                throw new Exception("You should use only (+ or -)");
+            if (string.IsNullOrEmpty(operacao) || (operacao != "-" && operacao != "+"))
+            {
+                Console.WriteLine("Invalid operation. Use only (+ or -).");
+                return;
+            }
 
             Console.WriteLine("Please, insert the value in minutes \n(Example: 10 or 30)");
+            var minutosInput = Console.ReadLine()?.Trim();
 
-            var minutos = Console.ReadLine();
+            if (!int.TryParse(minutosInput, NumberStyles.Integer, CultureInfo.InvariantCulture, out var minutes))
+            {
+                Console.WriteLine("Invalid minutes value. Enter a valid integer.");
+                return;
+            }
 
-            var data = DateTime.Now.AddMinutes(int.Parse(int.Parse(minutos) < 0 ? minutos : operacao + minutos));
+            var data = DateTime.Now.AddMinutes(minutes < 0 ? minutes : int.Parse(operacao + minutes));
 
-            Console.WriteLine($"{Cortesia(data)}! Today is {data.ToString("dd/MM/yyyy HH:mm:ss")}");
+            Console.WriteLine($"{Greeting(data)}! Today is {data.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)}");
             Console.ReadKey();
         }
 
-        private static string Cortesia(DateTime data)
+        private static string Greeting(DateTime data)
         {
             if (data.Hour > 6 && data.Hour < 12)
                 return "Good morning";

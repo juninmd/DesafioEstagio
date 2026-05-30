@@ -1,5 +1,17 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:js-lib"
-  ]
+    "config:recommended"
+  ],
+  "nuget": {
+    "enabled": true
+  },
+  "github-actions": {
+    "enabled": true
+  },
+  "labels": ["dependencies"],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"]
+  }
 }
