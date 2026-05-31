@@ -110,22 +110,28 @@ namespace DesafioEstagio.Tests.E2ETests
         }
 
         [Fact]
-        public void InvalidInput_OperationNotRecognized_ThrowsException()
+        public void InvalidInput_OperationNotRecognized_ShowsErrorMessage()
         {
             var input = $"notvalid{Environment.NewLine}10{Environment.NewLine}";
 
             using (var reader = new StringReader(input))
+            using (var writer = new StringWriter())
             {
                 var originalIn = Console.In;
+                var originalOut = Console.Out;
                 Console.SetIn(reader);
+                Console.SetOut(writer);
 
                 try
                 {
-                    Assert.Throws<Exception>(() => Program.Main(new string[0]));
+                    Program.Main(new string[0]);
+                    var output = writer.ToString();
+                    Assert.Contains("Error:", output);
                 }
                 finally
                 {
                     Console.SetIn(originalIn);
+                    Console.SetOut(originalOut);
                 }
             }
         }

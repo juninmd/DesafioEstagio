@@ -9,21 +9,34 @@ namespace DesafioEstagio
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Please, insert the operation Signal \n(Example: - or +)");
-            var operacao = Console.ReadLine();
+            try
+            {
+                Console.WriteLine("Please, insert the operation Signal \n(Example: - or +)");
+                var operacao = Console.ReadLine();
 
-            if (string.IsNullOrEmpty(operacao) == false && !_calculator.IsValidOperation(operacao))
-                throw new Exception("You should use only (+ or -)");
+                if (string.IsNullOrEmpty(operacao))
+                    throw new InvalidOperationException("Operation cannot be empty");
 
-            Console.WriteLine("Please, insert the value in minutes \n(Example: 10 or 30)");
+                if (!_calculator.IsValidOperation(operacao))
+                    throw new InvalidOperationException("You should use only (+ or -)");
 
-            var minutosInput = Console.ReadLine();
-            var minutos = _calculator.ParseMinutes(minutosInput);
+                Console.WriteLine("Please, insert the value in minutes \n(Example: 10 or 30)");
 
-            var data = _calculator.Calculate(DateTime.Now, operacao, minutos);
+                var minutosInput = Console.ReadLine();
+                var minutos = _calculator.ParseMinutes(minutosInput);
 
-            Console.WriteLine($"{_greeting.GetGreeting(data)}! Today is {data.ToString("dd/MM/yyyy HH:mm:ss")}");
-            Console.ReadKey();
+                var data = _calculator.Calculate(DateTime.Now, operacao, minutos);
+
+                Console.WriteLine($"{_greeting.GetGreeting(data)}! Today is {data.ToString("dd/MM/yyyy HH:mm:ss")}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+            finally
+            {
+                Console.ReadKey();
+            }
         }
     }
 }

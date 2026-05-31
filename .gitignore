@@ -250,9 +250,16 @@ ModelManifest.xml
 *.coveragexml
 TestResults/
 
-# Environment files
+# Environment and secrets
 .env
 .env.local
+.env.*.local
+*.key
+*.pem
+*.p12
+secrets/
+config/secrets.yml
+config/credentials.yml.enc
 
 # Build artifacts
 packages/
