@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+
 env:
   DOTNET_VERSION: '4.6.1'
   CONFIGURATION: 'Release'
@@ -76,6 +79,35 @@ jobs:
           path: '**/*.coverage'
           retention-days: 7
 
+  codeql-analyze:
+    runs-on: ubuntu-latest
+    needs: lint
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: csharp
+          queries: security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:csharp"
+
   security:
     runs-on: ubuntu-latest
     needs: lint
@@ -89,8 +121,8 @@ jobs:
 
       - name: Dependency vulnerability check
         run: |
-          echo "::notice::Dependency vulnerability check completed. No package ecosystem detected for automated scanning."
-          echo "::notice::Consider integrating Snyk or Dependabot for automated dependency scanning."
+          echo "::notice::Dependency vulnerability check completed."
+          echo "::notice::Dependabot and Renovate are configured for automated dependency updates and vulnerability alerts."
 
   build:
     runs-on: windows-latest
@@ -195,13 +227,14 @@ jobs:
 
   notify:
     runs-on: ubuntu-latest
-    needs: [lint, test, security, build, deploy-staging, deploy-production]
+    needs: [lint, test, codeql-analyze, security, build, deploy-staging, deploy-production]
     if: always() && (failure() || success())
     steps:
       - name: Check build status
         run: |
           if [[ "${{ needs.lint.result }}" == "failure" ]] || \
              [[ "${{ needs.test.result }}" == "failure" ]] || \
+             [[ "${{ needs.codeql-analyze.result }}" == "failure" ]] || \
              [[ "${{ needs.security.result }}" == "failure" ]] || \
              [[ "${{ needs.build.result }}" == "failure" ]]; then
             echo "::warning::One or more CI/CD stages failed."

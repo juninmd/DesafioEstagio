@@ -43,22 +43,28 @@ namespace DesafioEstagio.Tests.IntegrationTests
         [InlineData("*")]
         [InlineData("x")]
         [InlineData("")]
-        public void InvalidOperation_ThrowsException(string operation)
+        public void InvalidOperation_ShowsErrorMessage(string operation)
         {
             var input = $"{operation}{Environment.NewLine}10{Environment.NewLine}";
 
             using (var reader = new StringReader(input))
+            using (var writer = new StringWriter())
             {
                 var originalIn = Console.In;
+                var originalOut = Console.Out;
                 Console.SetIn(reader);
+                Console.SetOut(writer);
 
                 try
                 {
-                    Assert.Throws<Exception>(() => Program.Main(new string[0]));
+                    Program.Main(new string[0]);
+                    var output = writer.ToString();
+                    Assert.Contains("Error:", output);
                 }
                 finally
                 {
                     Console.SetIn(originalIn);
+                    Console.SetOut(originalOut);
                 }
             }
         }
