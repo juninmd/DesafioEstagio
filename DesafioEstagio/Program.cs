@@ -1,43 +1,42 @@
-﻿using System;
-using System.Globalization;
+using System;
 
 namespace DesafioEstagio
 {
     class Program
     {
+        static readonly TimeCalculator _calculator = new TimeCalculator();
+        static readonly GreetingService _greeting = new GreetingService();
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Please, insert the operation Signal \n(Example: - or +)");
-            var operacao = Console.ReadLine()?.Trim();
-
-            if (string.IsNullOrEmpty(operacao) || (operacao != "-" && operacao != "+"))
+            try
             {
-                Console.WriteLine("Invalid operation. Use only (+ or -).");
-                return;
+                Console.WriteLine("Please, insert the operation Signal \n(Example: - or +)");
+                var operacao = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(operacao))
+                    throw new InvalidOperationException("Operation cannot be empty");
+
+                if (!_calculator.IsValidOperation(operacao))
+                    throw new InvalidOperationException("You should use only (+ or -)");
+
+                Console.WriteLine("Please, insert the value in minutes \n(Example: 10 or 30)");
+
+                var minutosInput = Console.ReadLine();
+                var minutos = _calculator.ParseMinutes(minutosInput);
+
+                var data = _calculator.Calculate(DateTime.Now, operacao, minutos);
+
+                Console.WriteLine($"{_greeting.GetGreeting(data)}! Today is {data.ToString("dd/MM/yyyy HH:mm:ss")}");
             }
-
-            Console.WriteLine("Please, insert the value in minutes \n(Example: 10 or 30)");
-            var minutosInput = Console.ReadLine()?.Trim();
-
-            if (!int.TryParse(minutosInput, NumberStyles.Integer, CultureInfo.InvariantCulture, out var minutes))
+            catch (Exception ex)
             {
-                Console.WriteLine("Invalid minutes value. Enter a valid integer.");
-                return;
+                Console.WriteLine($"Error: {ex.Message}");
             }
-
-            var data = DateTime.Now.AddMinutes(minutes < 0 ? minutes : int.Parse(operacao + minutes));
-
-            Console.WriteLine($"{Greeting(data)}! Today is {data.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)}");
-            Console.ReadKey();
-        }
-
-        private static string Greeting(DateTime data)
-        {
-            if (data.Hour > 6 && data.Hour < 12)
-                return "Good morning";
-            if (data.Hour >= 12 && data.Hour < 18)
-                return "Good afternoon";
-            return "Good evening";
+            finally
+            {
+                Console.ReadKey();
+            }
         }
     }
 }

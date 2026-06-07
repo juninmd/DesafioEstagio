@@ -244,6 +244,12 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 
+# Test results
+*.trx
+*.coverage
+*.coveragexml
+TestResults/
+
 # Environment and secrets
 .env
 .env.local
@@ -253,3 +259,8 @@ ModelManifest.xml
 *.p12
 secrets/
 config/secrets.yml
+config/credentials.yml.enc
+
+# Build artifacts
+packages/
+build/

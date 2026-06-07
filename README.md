@@ -1,39 +1,86 @@
-```markdown
 # DesafioEstagio
 
-**A standard software project.**
+[![CI/CD Pipeline](https://github.com/juninmd/DesafioEstagio/actions/workflows/ci.yml/badge.svg)](https://github.com/juninmd/DesafioEstagio/actions/workflows/ci.yml)
+[![Security Scan](https://github.com/juninmd/DesafioEstagio/actions/workflows/security.yml/badge.svg)](https://github.com/juninmd/DesafioEstagio/actions/workflows/security.yml)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![.NET Framework](https://img.shields.io/badge/.NET-Framework%204.6.1-blueviolet)](https://dotnet.microsoft.com/)
 
-## Installation
+A .NET Framework console application with full CI/CD pipeline.
 
-1.  Clone the repository: `git clone https://github.com/your-username/DesafioEstagio.git`
-2.  Navigate to the project directory: `cd DesafioEstagio`
-3.  Install dependencies: `npm install` (or relevant package manager commands).
-4.  Set up the project: `npm init -y`
+## Project Structure
 
-## Usage
-
-*   **Project Structure:**  The project follows a standard MVC (Model-View-Controller) structure.
-    *   `src/`: Contains the source code.
-        *   `controllers/`: Handles user requests.
-        *   `models/`: Represents data and business logic.
-        *   `views/`: Displays data to the user.
-    *   `models/`:  `Model.sln` - Defines the data models.
-    *   `views/`: `View.sln` - Defines the views for the user interface.
-    *   `config/`: Contains configuration files.
-        *   `database.yml`: Database connection details.
-        *   `settings.json`: Application settings.
-    *   `tests/`: Contains unit and integration tests.
-        *   `test/Model.sln` - Test model class.
-        *   `test/View.sln` - Test view class.
-    *   `.gitignore`: Specifies files and directories to ignore.
-    *   .gitattributes:  Specifies Git-related attributes (e.g., ignore certain files).
-    *   DesafioEstagio.sln: The main project file.
-    *   DesafioEstagio: The source code project file.
-    *   renovate.json:  Updates the project file (possibly for version control or automation).
-
-*   **Development:**
-    *   Use the `npm run build` command to build the application for deployment.
-    *   Run tests using `npm test`.
-
-*   **Deployment:** Deploy to a suitable environment (e.g., AWS, Heroku).
 ```
+DesafioEstagio/
+├── DesafioEstagio/           # Main application
+│   ├── Program.cs            # Entry point
+│   ├── GreetingService.cs    # Greeting logic
+│   ├── TimeCalculator.cs     # Time calculation logic
+│   ├── App.config            # Application configuration
+│   └── Properties/
+├── DesafioEstagio.Tests/     # Test project
+│   ├── UnitTests/            # Unit tests (business logic)
+│   ├── IntegrationTests/     # Integration tests (full flow)
+│   ├── E2ETests/             # End-to-end tests (console I/O)
+│   └── Properties/
+├── .github/workflows/        # GitHub Actions CI/CD
+├── .editorconfig             # Code style rules
+├── .env.example              # Environment variables template
+└── CONTRIBUTING.md           # Contribution guidelines
+```
+
+## Prerequisites
+
+- Windows 7+ or Windows Server 2012+
+- Visual Studio 2015+ or MSBuild
+- .NET Framework 4.6.1 SDK
+
+## Build
+
+```powershell
+# Restore packages
+nuget restore DesafioEstagio.sln
+
+# Build
+msbuild DesafioEstagio.sln /p:Configuration=Release
+
+# Or open DesafioEstagio.sln in Visual Studio
+```
+
+## Test
+
+```powershell
+# Build tests
+msbuild DesafioEstagio.sln /p:Configuration=Debug
+
+# Run tests
+vstest.console.exe DesafioEstagio.Tests\bin\Debug\DesafioEstagio.Tests.dll
+```
+
+## CI/CD Pipeline
+
+| Stage | Description | Trigger |
+|-------|-------------|---------|
+| Lint | Code style and static analysis | Every push/PR |
+| Test | Run unit, integration, and E2E tests | After lint |
+| Security | Secret scanning and vulnerability check | After lint |
+| Build | Release build with optimizations | After test |
+| Deploy Staging | Auto-deploy to staging | PR to main or push to develop |
+| Deploy Production | Manual approval required | Push to main |
+| Notify | Build status summary | After all stages |
+
+## Deployment
+
+- **Staging**: Automatically deployed when PRs are merged to `develop`
+- **Production**: Requires manual approval via GitHub Environments
+
+## Quality Gates
+
+- Code coverage >= 80%
+- All tests must pass
+- No security vulnerabilities
+- Linting standards enforced
+- Files under 180 lines
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.

@@ -1,11 +1,34 @@
-﻿version: 2
+version: 2
 updates:
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
     open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "nuget"
+    groups:
+      nuget-packages:
+        patterns:
+          - "*"
+    ignore:
+      - dependency-name: "*.Sample*"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
