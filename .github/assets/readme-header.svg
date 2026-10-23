@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="t d">
+  <title id="t">DesafioEstagio terminal session</title>
+  <desc id="d">Console session: the user types + and 10, and the app prints a greeting with the date shifted by 10 minutes.</desc>
+  <rect width="1280" height="640" rx="24" fill="#0f172a"/>
+  <text x="80" y="120" fill="#f8fafc" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="72" font-weight="700">DesafioEstagio</text>
+  <text x="80" y="180" fill="#94a3b8" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="32">Add or subtract minutes from now and get a greeting.</text>
+  <rect x="80" y="230" width="1120" height="350" rx="16" fill="#1e293b"/>
+  <circle cx="116" cy="264" r="9" fill="#f87171"/>
+  <circle cx="146" cy="264" r="9" fill="#fbbf24"/>
+  <circle cx="176" cy="264" r="9" fill="#4ade80"/>
+  <g font-family="Consolas, 'Cascadia Mono', Menlo, monospace" font-size="28">
+    <text x="116" y="332" fill="#cbd5e1">Please, insert the operation Signal</text>
+    <text x="116" y="376" fill="#4ade80">+</text>
+    <text x="116" y="420" fill="#cbd5e1">Please, insert the value in minutes</text>
+    <text x="116" y="464" fill="#4ade80">10</text>
+    <text x="116" y="528" fill="#f8fafc">Good morning! Today is 23/10/2026 10:39:47</text>
+  </g>
+</svg>
